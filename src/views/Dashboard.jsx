@@ -81,7 +81,7 @@ class Dashboard extends React.Component {
                         <Button
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data1"
+                            active: this.state.bigChartData.set === "temp"
                           })}
                           color="info"
                           id="0"
@@ -107,7 +107,7 @@ class Dashboard extends React.Component {
                           size="sm"
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data2"
+                            active: this.state.bigChartData.set === "humid"
                           })}
                           onClick={() => this.setBgChartSet("humid")}
                         >
@@ -129,7 +129,7 @@ class Dashboard extends React.Component {
                           size="sm"
                           tag="label"
                           className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data3"
+                            active: this.state.bigChartData.set === "moist"
                           })}
                           onClick={() => this.setBgChartSet("moist")}
                         >
