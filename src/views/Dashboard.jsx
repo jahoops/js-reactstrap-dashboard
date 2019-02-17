@@ -37,14 +37,29 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bigChartData: "data1"
+      bigChartData: {set: "temp", data: [{id:0,temp:0,humid:0,moist:0,dateInserted:''}]}
     };
   }
-  setBgChartData = name => {
+  setBgChartSet = name => {
     this.setState({
-      bigChartData: name
+      bigChartData: { ...this.state.bigChartData, set: name }
     });
   };
+  setBgChartData = () => {
+    fetch('http://stepwithoutfeet.com/api/sensors')
+      .then((response) => response.json())
+      .then((responseJson) => {
+    this.setState({
+      bigChartData: { ...this.state.bigChartData, data: responseJson }
+    });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+  componentDidMount() {
+    this.setBgChartData();
+  }
   render() {
     return (
       <>
@@ -55,8 +70,8 @@ class Dashboard extends React.Component {
                 <CardHeader>
                   <Row>
                     <Col className="text-left" sm="6">
-                      <h5 className="card-category">Total Shipments</h5>
-                      <CardTitle tag="h2">Performance</CardTitle>
+                      <h5 className="card-category">Indoor Garden Sensors</h5>
+                      <CardTitle tag="h2">{this.state.bigChartData.set}</CardTitle>
                     </Col>
                     <Col sm="6">
                       <ButtonGroup
@@ -71,7 +86,7 @@ class Dashboard extends React.Component {
                           color="info"
                           id="0"
                           size="sm"
-                          onClick={() => this.setBgChartData("data1")}
+                          onClick={() => this.setBgChartSet("temp")}
                         >
                           <input
                             defaultChecked
@@ -80,7 +95,7 @@ class Dashboard extends React.Component {
                             type="radio"
                           />
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Accounts
+                            Temperature
                           </span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-single-02" />
@@ -94,7 +109,7 @@ class Dashboard extends React.Component {
                           className={classNames("btn-simple", {
                             active: this.state.bigChartData === "data2"
                           })}
-                          onClick={() => this.setBgChartData("data2")}
+                          onClick={() => this.setBgChartSet("humid")}
                         >
                           <input
                             className="d-none"
@@ -102,7 +117,7 @@ class Dashboard extends React.Component {
                             type="radio"
                           />
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Purchases
+                            Humidity
                           </span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-gift-2" />
@@ -116,7 +131,7 @@ class Dashboard extends React.Component {
                           className={classNames("btn-simple", {
                             active: this.state.bigChartData === "data3"
                           })}
-                          onClick={() => this.setBgChartData("data3")}
+                          onClick={() => this.setBgChartSet("moist")}
                         >
                           <input
                             className="d-none"
@@ -124,7 +139,7 @@ class Dashboard extends React.Component {
                             type="radio"
                           />
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Sessions
+                            Moisture
                           </span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-tap-02" />
@@ -137,8 +152,8 @@ class Dashboard extends React.Component {
                 <CardBody>
                   <div className="chart-area">
                     <Line
-                      data={chartExample1[this.state.bigChartData]}
-                      options={chartExample1.options}
+                      data={chartExample1(this.state.bigChartData).data}
+                      options={chartExample1(this.state.bigChartData).options}
                     />
                   </div>
                 </CardBody>
