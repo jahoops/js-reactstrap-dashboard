@@ -3,7 +3,62 @@
 // #############################
 
 // chartExample1 and chartExample2 options
-let chart1_2_options = {
+let chart1options = {
+  maintainAspectRatio: false,
+  legend: {
+    display: false
+  },
+  tooltips: {
+    backgroundColor: "#f5f5f5",
+    titleFontColor: "#333",
+    bodyFontColor: "#666",
+    bodySpacing: 4,
+    xPadding: 12,
+    mode: "nearest",
+    intersect: 0,
+    position: "nearest"
+  },
+  responsive: true,
+  scales: {
+    yAxes: [
+      {
+        barPercentage: 1.6,
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.0)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          padding: 20,
+          fontColor: "#9a9a9a"
+        }
+      }
+    ],
+    xAxes: [
+      {
+        type: 'time',
+        time: {
+          unit: 'day',
+          unitStepSize: 1,
+          displayFormats: {
+             'day': 'MMM DD'
+          }
+        },
+        barPercentage: 1.6,
+        gridLines: {
+          drawBorder: false,
+          color: "rgba(29,140,248,0.1)",
+          zeroLineColor: "transparent"
+        },
+        ticks: {
+          padding: 20,
+          fontColor: "#9a9a9a"
+        }
+      }
+    ]
+  }
+};
+let chart2options = {
   maintainAspectRatio: false,
   legend: {
     display: false
@@ -83,12 +138,12 @@ function chartExample1(chartdata) {
             pointHoverRadius: 4,
             pointHoverBorderWidth: 15,
             pointRadius: 4,
-            data: chartdata.data.map(row => { return chartdata.set==='moist' ? (1 -  row[chartdata.set]/3.08) * 100 : row[chartdata.set] })
+            data: chartdata.data.map(row => { return chartdata.set==='moist' ? {x:row["dateinserted"],y:(1 -  row[chartdata.set]/3.08) * 100} : {x:row["dateinserted"],y:row[chartdata.set]}; })
           }
         ]
       };
     },
-    options: chart1_2_options
+    options: chart1options
   }
 };
 
@@ -128,7 +183,7 @@ let chartExample2 = {
       ]
     };
   },
-  options: chart1_2_options
+  options: chart2options
 };
 
 // #########################################

@@ -47,11 +47,11 @@ class Dashboard extends React.Component {
   };
   setBgChartData = () => {
     fetch('http://stepwithoutfeet.com/api/sensors')
-      .then((response) => response.json())
-      .then((responseJson) => {
-    this.setState({
-      bigChartData: { ...this.state.bigChartData, data: responseJson }
-    });
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        bigChartData: { ...this.state.bigChartData, data: responseJson }
+      });
     })
     .catch((error) => {
       console.error(error);
@@ -59,6 +59,9 @@ class Dashboard extends React.Component {
   }
   componentDidMount() {
     this.setBgChartData();
+    var chartdata = this.bigChartData;
+    var checkdata = chartdata.data.map(row => { return chartdata.set==='moist' ? {x:row["dateinserted"],y:(1 -  row[chartdata.set]/3.08) * 100} : {x:row["dateinserted"],y:row[chartdata.set]}; });
+    console.log(checkdata);
   }
   render() {
     return (
